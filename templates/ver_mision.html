@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Ver Misión{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ mision.titulo }}</h2>
+    <p><strong>Descripción:</strong> {{ mision.descripcion }}</p>
+    <p><strong>Voluntarios necesarios:</strong> {{ mision.voluntarios }}</p>
+    <p><strong>Creador:</strong> {{ mision.creador.nombre }}</p>
+
+    <hr>
+
+    <!-- Botón para aceptar la misión -->
+    {% if session['usuario_id'] != mision.usuario_id %}
+        <form method="POST" action="{{ url_for('aceptar_mision', id=mision.id) }}">
+            <button type="submit" class="btn btn-success">Aceptar Misión</button>
+        </form>
+    {% endif %}
+
+    <!-- Mostrar personas que han aceptado la misión -->
+    <p><strong>Personas que han aceptado la misión:</strong></p>
+    <ul>
+        {% for usuario in mision.aceptados %}
+            <li>{{ usuario.nombre }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Sección de comentarios -->
+    <div class="comments-section">
+        <h4>Comentarios</h4>
+        <form method="POST" action="{{ url_for('comentar_mision', id=mision.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <div class="mb-3">
+                <textarea class="form-control" name="comentario" rows="3" placeholder="Escribe un comentario..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-secondary">Comentar</button>
+        </form>
+
+        <!-- Lista de comentarios -->
+        <ul class="list-group mt-3">
+            {% for comentario in mision.comentarios %}
+                <li class="list-group-item">
+                    <strong>{{ comentario.usuario.nombre }}:</strong> {{ comentario.texto }}
+                </li>
+            {% else %}
+                <li class="list-group-item">No hay comentarios aún.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

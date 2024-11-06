@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Misión{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2>Editar Misión</h2>
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Título:</label>
+                    <input type="text" class="form-control" id="titulo" name="titulo" value="{{ mision.titulo }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción:</label>
+                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required>{{ mision.descripcion }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="voluntarios" class="form-label">Voluntarios necesarios (2-20):</label>
+                    <input type="number" class="form-control" id="voluntarios" name="voluntarios" min="2" max="20" value="{{ mision.voluntarios }}" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Actualizar Misión</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

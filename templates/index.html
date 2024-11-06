@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+    <h1>Bienvenido {{ session['usuario_nombre'] }}</h1>
+    
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Voluntarios</th>
+                <th>Creador</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mision in misiones %}
+                <tr>
+                    <td>{{ mision.titulo }}</td>
+                    <td>{{ mision.descripcion }}</td>
+                    <td>{{ mision.voluntarios }}</td>
+                    <td>{{ mision.creador.nombre }}</td>
+                    <td>
+                        <a href="/misiones/{{ mision.id }}" class="btn btn-info btn-sm">Ver</a>
+                        {% if mision.usuario_id == session['usuario_id'] %}
+                            <a href="/misiones/{{ mision.id }}/editar" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="/misiones/{{ mision.id }}/eliminar" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro?')">Borrar</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
